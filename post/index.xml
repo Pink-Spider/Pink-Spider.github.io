@@ -6,7 +6,14 @@
     <description>Recent content in Posts on MeiK&#39;s blog</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Fri, 19 Jul 2024 15:14:04 +0900</lastBuildDate>
     <atom:link href="https://meik2333.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Title_of_the_post</title>
+      <link>https://meik2333.com/post/title_of_the_post/</link>
+      <pubDate>Fri, 19 Jul 2024 13:39:51 +0900</pubDate>
+      <guid>https://meik2333.com/post/title_of_the_post/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
