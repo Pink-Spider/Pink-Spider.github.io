@@ -296,9 +296,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -357,13 +357,14 @@
 <li>예전에는 모든 요청을 직접 Servlet에서 처리했어요.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@WebServlet</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloServlet</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">HttpServlet</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloServlet</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">HttpServlet</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doGet</span><span class="p">(</span><span class="n">HttpServletRequest</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">HttpServletResponse</span><span class="w"> </span><span class="n">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">response</span><span class="p">.</span><span class="na">getWriter</span><span class="p">().</span><span class="na">write</span><span class="p">(</span><span class="s">&#34;Hello from Servlet!&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>이건 거의 Spring 이전의 <strong>전통적인 웹 방식</strong>이에요.</p></blockquote>
+<p>이건 거의 Spring 이전의 <strong>전통적인 웹 방식</strong>이에요.</p>
+</blockquote>
 <hr>
 <h2 id="-2-dispatcherservlet이란">🚦 2. <strong>DispatcherServlet</strong>이란?</h2>
 <h3 id="-정의-1">✅ 정의</h3>
@@ -432,7 +433,8 @@
 </ul>
 <blockquote>
 <p>즉, DispatcherServlet은 <strong>Spring의 뇌와 같은 존재</strong>예요 🧠<br>
-Filter가 호출한 요청은 결국 DispatcherServlet을 통해 컨트롤러로 전달돼요.</p></blockquote>
+Filter가 호출한 요청은 결국 DispatcherServlet을 통해 컨트롤러로 전달돼요.</p>
+</blockquote>
 <hr>
 </article>
               </div>

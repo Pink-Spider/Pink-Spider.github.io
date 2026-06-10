@@ -299,9 +299,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -363,18 +363,19 @@
 <p>설정 후 MySQL을 재시작해야 반영됩니다.</p>
 <h4 id="방법-2-mysql-실행-중에-설정-변경">방법 2: MySQL 실행 중에 설정 변경</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">slow_query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ON&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">slow_query_log_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/var/log/mysql/slow.log&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">long_query_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">log_queries_not_using_indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">slow_query_log_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/var/log/mysql/slow.log&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">long_query_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">log_queries_not_using_indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>주의: 이 설정은 MySQL 재시작 후 사라질 수 있으므로 <code>my.cnf</code>에도 반영해야 합니다.</p></blockquote>
+<p>주의: 이 설정은 MySQL 재시작 후 사라질 수 있으므로 <code>my.cnf</code>에도 반영해야 합니다.</p>
+</blockquote>
 <hr>
 <h3 id="2-슬로우-쿼리-로그-확인">2. <strong>슬로우 쿼리 로그 확인</strong></h3>
 <p>슬로우 쿼리는 설정된 로그 파일에 저장됩니다.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tail -f /var/log/mysql/slow.log
 </span></span></code></pre></div><p>또는 <code>grep</code>, <code>awk</code> 등으로 분석할 수 있습니다.</p>
 <hr>
-<h3 id="3-mysqldumpslow를-사용한-분석">3. <strong><code>mysqldumpslow</code>를 사용한 분석</strong></h3>
+<h3 id="3-mysqldumpslow">3. <strong><code>mysqldumpslow</code>를 사용한 분석</strong></h3>
 <p>MySQL에 포함된 <code>mysqldumpslow</code> 유틸리티로 로그를 요약할 수 있습니다.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysqldumpslow -s t -t <span class="m">10</span> /var/log/mysql/slow.log
 </span></span></code></pre></div><ul>
@@ -383,7 +384,7 @@
 <li><code>/var/log/mysql/slow.log</code>: 로그 파일 경로</li>
 </ul>
 <hr>
-<h3 id="4-pt-query-digest를-사용한-고급-분석-percona-toolkit">4. <strong><code>pt-query-digest</code>를 사용한 고급 분석 (Percona Toolkit)</strong></h3>
+<h3 id="4-pt-query-digest">4. <strong><code>pt-query-digest</code>를 사용한 고급 분석 (Percona Toolkit)</strong></h3>
 <p>더 정교한 분석을 위해 <code>pt-query-digest</code> 도구를 사용합니다.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pt-query-digest /var/log/mysql/slow.log
 </span></span></code></pre></div><p>이 도구는 다음을 포함한 자세한 통계를 제공합니다:</p>
@@ -398,8 +399,8 @@
 <p>MySQL 5.6 이상에서는 <code>performance_schema</code>를 통해 실시간 쿼리 모니터링이 가능합니다.</p>
 <p>예시:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">events_statements_summary_by_digest</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">AVG_TIMER_WAIT</span><span class="w"> </span><span class="k">DESC</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">AVG_TIMER_WAIT</span><span class="w"> </span><span class="k">DESC</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>이 방식은 로그 기반 분석보다 실시간 성능 파악에 적합합니다.</p>
 <hr>
 <h3 id="6-모니터링-도구-사용">6. <strong>모니터링 도구 사용</strong></h3>

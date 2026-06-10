@@ -305,9 +305,9 @@ public class User { private String name; @JsonIgnore private String password; //
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -360,7 +360,7 @@ public class User { private String name; @JsonIgnore private String password; //
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// getters/setters</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>위 객체를 JSON으로 변환하면 (예: <code>name=&quot;Alice&quot;</code>, <code>password=&quot;secret&quot;</code>이더라도):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Alice&#34;</span>
@@ -369,12 +369,12 @@ public class User { private String name; @JsonIgnore private String password; //
 <hr>
 <p>반면, <strong>값이 없을 때만 필드를 제외하고 싶다면</strong> <code>@JsonInclude</code>를 사용해야 합니다:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@JsonInclude</span><span class="p">(</span><span class="n">JsonInclude</span><span class="p">.</span><span class="na">Include</span><span class="p">.</span><span class="na">NON_NULL</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// getters/setters</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>이렇게 하면 <code>password</code>가 <code>null</code>일 때만 JSON에서 제외됩니다.</p>
 <p>필요에 따라 <code>NON_EMPTY</code>, <code>NON_DEFAULT</code> 같은 옵션도 사용할 수 있어요.</p>
 </article>

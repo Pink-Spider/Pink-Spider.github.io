@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://pink-spider.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://pink-spider.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/your%20css%20file%20name" />
+  
+  <title>
+    MySQL Collation 완전 정복 | Pink Spider
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/logo_pinkspider.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content="1. Charset vs Collation, 뭐가 다를까? Character Set(문자셋) 은 &ldquo;어떤 문자들을 저장할 수 있는가&quot;를 정의합니다. utf8mb4는 이모지 포함 모든 유니코드 문자를 최대 4바이트로 저장합니다.
+Collation(콜레이션) 은 &ldquo;문자들을 어떻게 비교하고 정렬하는가&quot;를 정의합니다. &#39;A&#39; = &#39;a&#39;인지, &#39;ä&#39;가 &#39;a&#39;와 같게 취급되는지, 한글이 사전 순으로 정렬되는지를 결정하는 규칙 집합입니다.
+핵심 관계: 모든 Collation은 특정 Charset에 종속됩니다. utf8mb4_unicode_ci는 utf8mb4 charset에서만 사용 가능합니다.
+-- charset과 collation의 관계 확인 SHOW COLLATION WHERE Charset = &#39;utf8mb4&#39; AND Collation LIKE &#39;%general%&#39;; 2. Collation 이름은 어떻게 읽나? Collation 이름은 최대 4개 파트로 구성됩니다. 규칙을 알면 처음 보는 이름도 바로 해석할 수 있습니다.
+"
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://pink-spider.github.io/post/infra/db/mysql_collation/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="MySQL Collation 완전 정복 - Pink Spider"
+/>
+<meta
+  name="twitter:description"
+  content="1. Charset vs Collation, 뭐가 다를까? Character Set(문자셋) 은 &ldquo;어떤 문자들을 저장할 수 있는가&quot;를 정의합니다. utf8mb4는 이모지 포함 모든 유니코드 문자를 최대 4바이트로 저장합니다.
+Collation(콜레이션) 은 &ldquo;문자들을 어떻게 비교하고 정렬하는가&quot;를 정의합니다. &#39;A&#39; = &#39;a&#39;인지, &#39;ä&#39;가 &#39;a&#39;와 같게 취급되는지, 한글이 사전 순으로 정렬되는지를 결정하는 규칙 집합입니다.
+핵심 관계: 모든 Collation은 특정 Charset에 종속됩니다. utf8mb4_unicode_ci는 utf8mb4 charset에서만 사용 가능합니다.
+-- charset과 collation의 관계 확인 SHOW COLLATION WHERE Charset = &#39;utf8mb4&#39; AND Collation LIKE &#39;%general%&#39;; 2. Collation 이름은 어떻게 읽나? Collation 이름은 최대 4개 파트로 구성됩니다. 규칙을 알면 처음 보는 이름도 바로 해석할 수 있습니다.
+"
+/>
+<meta name="twitter:site" content="https://pink-spider.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://pink-spider.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="MySQL Collation 완전 정복 - Pink Spider"
+/>
+<meta
+  property="og:description"
+  content="1. Charset vs Collation, 뭐가 다를까? Character Set(문자셋) 은 &ldquo;어떤 문자들을 저장할 수 있는가&quot;를 정의합니다. utf8mb4는 이모지 포함 모든 유니코드 문자를 최대 4바이트로 저장합니다.
+Collation(콜레이션) 은 &ldquo;문자들을 어떻게 비교하고 정렬하는가&quot;를 정의합니다. &#39;A&#39; = &#39;a&#39;인지, &#39;ä&#39;가 &#39;a&#39;와 같게 취급되는지, 한글이 사전 순으로 정렬되는지를 결정하는 규칙 집합입니다.
+핵심 관계: 모든 Collation은 특정 Charset에 종속됩니다. utf8mb4_unicode_ci는 utf8mb4 charset에서만 사용 가능합니다.
+-- charset과 collation의 관계 확인 SHOW COLLATION WHERE Charset = &#39;utf8mb4&#39; AND Collation LIKE &#39;%general%&#39;; 2. Collation 이름은 어떻게 읽나? Collation 이름은 최대 4개 파트로 구성됩니다. 규칙을 알면 처음 보는 이름도 바로 해석할 수 있습니다.
+"
+/>
+<meta property="og:url" content="https://pink-spider.github.io/post/infra/db/mysql_collation/" />
+<meta property="og:site_name" content="MySQL Collation 완전 정복" />
+<meta
+  property="og:image"
+  content="https://pink-spider.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2026-06-10 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6329038356545416"
+        crossorigin="anonymous"></script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://pink-spider.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://pink-spider.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://pink-spider.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://pink-spider.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/logo_pinkspider.png"
+                    width="32" height="32" alt="Pink Spider"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://pink-spider.github.io/">Pink Spider</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://pink-spider.github.io/post/infra/db/mysql_collation/">MySQL Collation 완전 정복</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Wed, 10 Jun 2026 00:00:00 &#43;0000"
+                    class="no-wrap">
+                    Wed, 10 Jun 2026 00:00:00 &#43;0000</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Wed, 10 Jun 2026 11:12:51 &#43;0900"
+                    class="no-wrap">
+                    Wed, 10 Jun 2026 11:12:51 &#43;0900</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      2295 Words
+                    <span class="file-info-divider"></span>
+                                        10 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+                    
+                    
+                    <a class="muted-link mr-3" href="/tags/mysql">
+                      <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                        <path fill-rule="evenodd"
+                          d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                        </path>
+                      </svg>
+                      MySQL
+                    </a>
+                    
+                    <a class="muted-link mr-3" href="/tags/database">
+                      <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                        <path fill-rule="evenodd"
+                          d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                        </path>
+                      </svg>
+                      Database
+                    </a>
+                    
+                    <a class="muted-link mr-3" href="/tags/charset">
+                      <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                        <path fill-rule="evenodd"
+                          d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                        </path>
+                      </svg>
+                      Charset
+                    </a>
+                    
+                    <a class="muted-link mr-3" href="/tags/collation">
+                      <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                        <path fill-rule="evenodd"
+                          d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                        </path>
+                      </svg>
+                      Collation
+                    </a>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><h2 id="1-charset-vs-collation-뭐가-다를까">1. Charset vs Collation, 뭐가 다를까?</h2>
+<p><strong>Character Set(문자셋)</strong> 은 &ldquo;어떤 문자들을 저장할 수 있는가&quot;를 정의합니다.
+<code>utf8mb4</code>는 이모지 포함 모든 유니코드 문자를 최대 4바이트로 저장합니다.</p>
+<p><strong>Collation(콜레이션)</strong> 은 &ldquo;문자들을 어떻게 비교하고 정렬하는가&quot;를 정의합니다.
+<code>'A' = 'a'</code>인지, <code>'ä'</code>가 <code>'a'</code>와 같게 취급되는지, 한글이 사전 순으로 정렬되는지를 결정하는 규칙 집합입니다.</p>
+<blockquote>
+<p><strong>핵심 관계:</strong> 모든 Collation은 특정 Charset에 종속됩니다. <code>utf8mb4_unicode_ci</code>는 <code>utf8mb4</code> charset에서만 사용 가능합니다.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- charset과 collation의 관계 확인
+</span></span></span><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="k">COLLATION</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">Charset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;utf8mb4&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">Collation</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%general%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="2-collation-이름은-어떻게-읽나">2. Collation 이름은 어떻게 읽나?</h2>
+<p>Collation 이름은 <strong>최대 4개 파트</strong>로 구성됩니다. 규칙을 알면 처음 보는 이름도 바로 해석할 수 있습니다.</p>
+<pre tabindex="0"><code>utf8mb4  _  unicode  _  520  _  ci
+   │            │          │      │
+   │            │          │      └─ 플래그: ci / cs / bin
+   │            │          └─────── 유니코드 버전: 520 = 5.2.0 / 0900 = 9.0.0
+   │            └────────────────── 알고리즘: unicode / general / bin / 0900
+   └─────────────────────────────── 문자셋: utf8mb4 / utf8 / latin1 …
+</code></pre><h3 id="접미사-플래그-의미">접미사 플래그 의미</h3>
+<table>
+  <thead>
+      <tr>
+          <th>접미사</th>
+          <th>Full Name</th>
+          <th>동작</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>_ci</code></td>
+          <td>Case Insensitive</td>
+          <td><code>'A' = 'a'</code> → <strong>true</strong> (대소문자 무시)</td>
+      </tr>
+      <tr>
+          <td><code>_cs</code></td>
+          <td>Case Sensitive</td>
+          <td><code>'A' = 'a'</code> → false (대소문자 구분)</td>
+      </tr>
+      <tr>
+          <td><code>_bin</code></td>
+          <td>Binary</td>
+          <td>바이트 값 그대로 비교 (가장 빠름, 완전 구분)</td>
+      </tr>
+      <tr>
+          <td><code>_ai</code></td>
+          <td>Accent Insensitive</td>
+          <td><code>'e' = 'é'</code> → true (악센트 무시)</td>
+      </tr>
+      <tr>
+          <td><code>_as</code></td>
+          <td>Accent Sensitive</td>
+          <td><code>'e' ≠ 'é'</code> (악센트 구분)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="3-주요-collation-비교">3. 주요 Collation 비교</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Collation</th>
+          <th>MySQL 버전</th>
+          <th>알고리즘</th>
+          <th>특징</th>
+          <th>추천</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>utf8mb4_general_ci</code></td>
+          <td>5.x</td>
+          <td>단순 변환</td>
+          <td>일부 언어 정렬 부정확, 빠름</td>
+          <td>❌ 비추천</td>
+      </tr>
+      <tr>
+          <td><code>utf8mb4_unicode_ci</code></td>
+          <td>5.x+</td>
+          <td>UCA 4.0</td>
+          <td>general보다 정확한 다국어 정렬</td>
+          <td>구버전 호환</td>
+      </tr>
+      <tr>
+          <td><code>utf8mb4_unicode_520_ci</code></td>
+          <td>5.6+</td>
+          <td>UCA 5.2</td>
+          <td>unicode보다 향상된 정확도</td>
+          <td>5.6 환경</td>
+      </tr>
+      <tr>
+          <td><strong><code>utf8mb4_0900_ai_ci</code></strong></td>
+          <td>8.0+</td>
+          <td>UCA 9.0</td>
+          <td>최신 유니코드, ai_ci, 빠름</td>
+          <td>✅ <strong>권장</strong></td>
+      </tr>
+      <tr>
+          <td><code>utf8mb4_0900_bin</code></td>
+          <td>8.0+</td>
+          <td>Binary</td>
+          <td>바이트 완전 일치, 최고 속도</td>
+          <td>토큰·해시</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>MySQL 8.0 기본값:</strong> MySQL 8.0부터 기본 charset은 <code>utf8mb4</code>, 기본 collation은 <code>utf8mb4_0900_ai_ci</code>로 변경되었습니다. 5.7 이하에서 업그레이드할 때 기존 동작이 달라질 수 있습니다.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 대소문자 구분 차이 실험
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="s1">&#39;Hello&#39;</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;hello&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ai_ci</span><span class="p">,</span><span class="w">  </span><span class="c1">-- 1 (같음)
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="s1">&#39;Hello&#39;</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_bin</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;hello&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bin</span><span class="p">;</span><span class="w">     </span><span class="c1">-- 0 (다름)
+</span></span></span></code></pre></div><hr>
+<h2 id="4-collation이-적용되는-4가지-레벨">4. Collation이 적용되는 4가지 레벨</h2>
+<p>MySQL은 <strong>서버 → 데이터베이스 → 테이블 → 컬럼</strong> 순으로 상속됩니다. 하위 레벨이 상위를 덮어씁니다.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 1. 서버 레벨 (my.cnf)
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- [mysqld]
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- character-set-server = utf8mb4
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- collation-server      = utf8mb4_0900_ai_ci
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 2. 데이터베이스 레벨
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">myapp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w">  </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATE</span><span class="w">        </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 3. 테이블 레벨
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w">    </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">name</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 4. 컬럼 레벨 (테이블 설정 덮어쓰기)
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tokens</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w">    </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">token</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_bin</span><span class="w">  </span><span class="c1">-- 토큰은 대소문자 구분 필요
+</span></span></span><span class="line"><span class="cl"><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="5-한국어-서비스의-올바른-collation-설정">5. 한국어 서비스의 올바른 Collation 설정</h2>
+<p>한글은 유니코드 코드포인트 순서와 가나다 순 정렬이 일치하므로, 다국어 서비스가 아닌 경우 어떤 UCA collation을 써도 한글 정렬 결과는 동일합니다. 단, <strong>영문 대소문자 및 특수문자 처리 정책</strong>에 따라 선택이 달라집니다.</p>
+<h3 id="-권장-설정-mysql-80">✅ 권장 설정 (MySQL 8.0+)</h3>
+<ul>
+<li>일반 텍스트, 이름, 검색어 컬럼 → <code>utf8mb4_0900_ai_ci</code></li>
+<li>비밀번호 해시, 토큰, UUID 컬럼 → <code>utf8mb4_0900_bin</code></li>
+</ul>
+<h3 id="-주의비추천">⛔ 주의·비추천</h3>
+<ul>
+<li><code>utf8mb4_general_ci</code> — 다국어 정렬 부정확</li>
+<li><code>utf8</code> charset — 이모지 저장 불가 (3바이트 한계)</li>
+<li>테이블마다 다른 collation — JOIN 시 불필요한 변환 비용</li>
+<li>혼합 charset 컬럼 간 비교 — 에러 발생</li>
+</ul>
+<h3 id="권장-mycnf-설정">권장 my.cnf 설정</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">character-set-server</span>  <span class="o">=</span> <span class="s">utf8mb4</span>
+</span></span><span class="line"><span class="cl"><span class="na">collation-server</span>      <span class="o">=</span> <span class="s">utf8mb4_0900_ai_ci</span>
+</span></span><span class="line"><span class="cl"><span class="na">skip-character-set-client-handshake</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysql]</span>
+</span></span><span class="line"><span class="cl"><span class="na">default-character-set</span> <span class="o">=</span> <span class="s">utf8mb4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[client]</span>
+</span></span><span class="line"><span class="cl"><span class="na">default-character-set</span> <span class="o">=</span> <span class="s">utf8mb4</span>
+</span></span></code></pre></div><hr>
+<h2 id="6-현재-설정-확인-및-변경-방법">6. 현재 설정 확인 및 변경 방법</h2>
+<h3 id="현재-설정-조회">현재 설정 조회</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 서버 전체 변수 확인
+</span></span></span><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%collation%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="n">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%character%&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 특정 테이블 collation 확인
+</span></span></span><span class="line"><span class="cl"><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 컬럼별 collation 상세 조회
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLUMN_NAME</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">CHARACTER_SET_NAME</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATION_NAME</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">COLUMNS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="n">TABLE_SCHEMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;myapp&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">TABLE_NAME</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;users&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h3 id="collation-변경-마이그레이션">Collation 변경 (마이그레이션)</h3>
+<blockquote>
+<p>⚠️ <strong>주의:</strong> Collation 변경은 테이블 리빌드를 동반합니다. 대용량 테이블에서는 <strong>서비스 점검</strong> 또는 <code>pt-online-schema-change</code> 사용을 권장합니다.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 테이블 전체 변경 (테이블 리빌드 발생)
+</span></span></span><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">CONVERT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 특정 컬럼만 변경
+</span></span></span><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">MODIFY</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 데이터베이스 기본값만 변경 (기존 테이블은 그대로)
+</span></span></span><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">myapp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w">  </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATE</span><span class="w">        </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="7-collation과-인덱스성능의-관계">7. Collation과 인덱스·성능의 관계</h2>
+<p>Collation 불일치는 쿼리 성능에 직접적인 영향을 미칩니다. 특히 <strong>JOIN 시 두 컬럼의 collation이 다르면 인덱스를 사용할 수 없고 풀 스캔이 발생</strong>합니다.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- ❌ 나쁜 예: collation 불일치 JOIN (인덱스 미사용)
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w">  </span><span class="n">users</span><span class="w"> </span><span class="n">u</span><span class="w">                           </span><span class="c1">-- collation: utf8mb4_general_ci
+</span></span></span><span class="line"><span class="cl"><span class="k">JOIN</span><span class="w">  </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">email</span><span class="p">;</span><span class="w">    </span><span class="c1">-- collation: utf8mb4_0900_ai_ci
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- EXPLAIN 결과: type = ALL (풀 스캔)
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- ✅ 좋은 예: 명시적 COLLATE 지정 또는 동일 collation 사용
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">FROM</span><span class="w">  </span><span class="n">users</span><span class="w"> </span><span class="n">u</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">JOIN</span><span class="w">  </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">ON</span><span class="w">  </span><span class="n">u</span><span class="p">.</span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">email</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h3 id="_bin-collation과-성능"><code>_bin</code> Collation과 성능</h3>
+<p><code>_bin</code> collation은 바이트 직접 비교라 변환 오버헤드가 없어 <strong>가장 빠릅니다</strong>. 단, 대소문자·악센트를 완전히 구분하므로 검색 쿼리에는 적합하지 않습니다. <strong>토큰, 해시, UUID 저장 컬럼</strong>에 이상적입니다.</p>
+<hr>
+<h2 id="8-현업에서-자주-겪는-실수들">8. 현업에서 자주 겪는 실수들</h2>
+<h3 id="-utf8-charset-사용">⚠️ <code>utf8</code> charset 사용</h3>
+<p>MySQL의 <code>utf8</code>은 실제 UTF-8이 아닌 3바이트 버전입니다. 이모지(4바이트)가 깨집니다. 반드시 <code>utf8mb4</code>를 사용하세요.</p>
+<h3 id="-57--80-업그레이드-시-기본-collation-변경">⚠️ 5.7 → 8.0 업그레이드 시 기본 collation 변경</h3>
+<p>MySQL 8.0에서 기본값이 <code>utf8mb4_0900_ai_ci</code>로 바뀝니다. 새 테이블과 기존 테이블의 collation이 달라져 JOIN 성능이 떨어질 수 있습니다.</p>
+<h3 id="-where-절-함수-사용으로-인덱스-무효화">⚠️ WHERE 절 함수 사용으로 인덱스 무효화</h3>
+<p><code>WHERE LOWER(name) = 'alice'</code>는 인덱스를 사용할 수 없습니다. <code>_ci</code> collation을 쓰면 <code>WHERE name = 'alice'</code>만으로 대소문자 무시 검색이 가능합니다.</p>
+<h3 id="-커넥션-charset-불일치">⚠️ 커넥션 charset 불일치</h3>
+<p>서버는 <code>utf8mb4</code>인데 커넥션이 <code>utf8</code>이면 데이터가 손상될 수 있습니다. 항상 <code>SET NAMES utf8mb4</code> 또는 드라이버 옵션 <code>characterEncoding=utf8mb4</code>를 설정하세요.</p>
+<h3 id="-비밀번호-컬럼에-_ci-collation">⚠️ 비밀번호 컬럼에 <code>_ci</code> collation</h3>
+<p><code>_ci</code>를 쓰면 <code>'Password1'</code>과 <code>'password1'</code>이 같은 값으로 인식됩니다. 비밀번호 해시 컬럼은 반드시 <code>_bin</code>을 사용하세요.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 컬럼별로 올바른 collation 적용 예시
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w">            </span><span class="nb">INT</span><span class="w">          </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">email</span><span class="w">         </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">,</span><span class="w">  </span><span class="c1">-- 검색: ci
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">password_hash</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_bin</span><span class="p">,</span><span class="w">     </span><span class="c1">-- 해시: bin
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">name</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">,</span><span class="w">  </span><span class="c1">-- 이름: ci
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">api_token</span><span class="w">     </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w">  </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_bin</span><span class="w">      </span><span class="c1">-- 토큰: bin
+</span></span></span><span class="line"><span class="cl"><span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w">  </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">COLLATE</span><span class="w">        </span><span class="n">utf8mb4_0900_ai_ci</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="정리">정리</h2>
+<table>
+  <thead>
+      <tr>
+          <th>상황</th>
+          <th>권장 Collation</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>일반 텍스트, 이름, 검색어</td>
+          <td><code>utf8mb4_0900_ai_ci</code></td>
+      </tr>
+      <tr>
+          <td>비밀번호 해시, 토큰, UUID</td>
+          <td><code>utf8mb4_0900_bin</code></td>
+      </tr>
+      <tr>
+          <td>MySQL 5.6 환경</td>
+          <td><code>utf8mb4_unicode_520_ci</code></td>
+      </tr>
+      <tr>
+          <td>MySQL 5.5 이하</td>
+          <td><code>utf8mb4_unicode_ci</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>Collation은 한 번 잘못 선택하면 마이그레이션 비용이 크므로, <strong>프로젝트 초기에 <code>utf8mb4</code> + <code>utf8mb4_0900_ai_ci</code>로 통일</strong>하는 것이 가장 좋습니다.</p>
+</article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://pink-spider.github.io/post/distributed_lock/">분산락(distributed lock) deep dive&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://pink-spider.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://pink-spider.github.io/css/toc.css' />
+
+<div id="gitalk-container" class="gitalk-container"></div>
+<link rel="stylesheet" href='https://pink-spider.github.io/css/gitalk.css'>
+<script src='https://pink-spider.github.io/js/gitalk.min.js'></script>
+<script>
+  const gitalk = new Gitalk({
+    accessToken: '',
+    repo: 'pink-spider.github.io',
+    owner: 'pink-spider',
+    admin: ['pink-spider'],
+    id: eval("location.pathname"), 
+    distractionFreeMode: false 
+  });
+  (function() {
+    gitalk.render('gitalk-container');
+  })();
+</script>
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light"
+  >
+    <ul
+      class="list-style-none d-flex flex-wrap col-12 flex-justify-center mb-2 mb-lg-0"
+    >
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+</div>
+
+</body>
+
+<script type="application/javascript" src="https://pink-spider.github.io/js/github-style.js"></script>
+
+<script src="https://pink-spider.github.io/js/mark.es6.min.js"></script>
+
+
+<script type="text/javascript">
+
+  const host = window.location.host;
+  const keyword = localStorage.getItem('keyword');
+  localStorage.removeItem('keyword');
+
+  if (keyword) {
+    const markInstance = new Mark(document.body);
+    markInstance.unmark({
+      done: function() {
+        markInstance.mark(keyword);
+      }
+    });
+  }
+
+  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-bg-primary');
+  const mutedColor = getComputedStyle(document.documentElement).getPropertyValue('--color-fg-muted');
+  const hoverColor = '#216EEB';
+
+  let originalStyle;
+  let svgOriginalStyle;
+  let titleOriginalStyle;
+
+  const onMouseOver = (node) => {
+    originalStyle = Object.assign({}, node.style);
+    node.style.backgroundColor = hoverColor;
+
+    const child = node.querySelector('.js-jump');
+    child.classList.remove('d-on-nav-focus');
+
+    const title = node.querySelector('.title');
+    if (title && primaryColor === ' #fff') {
+      titleOriginalStyle = title.style;
+      title.style.color = '#fff';
+    }
+
+    const svg = node.querySelector('.octicon');
+    if (svg) {
+      svgOriginalStyle = svg.style;
+      svg.style.color = '#fff';
+    }
+  }
+
+  const onMouseLeave = (node) => {
+    node.style = originalStyle;
+    const child = node.querySelector('.js-jump');
+    child.classList.add('d-on-nav-focus');
+
+    const title = node.querySelector('.title');
+    title.style = titleOriginalStyle;
+
+    const svg = node.querySelector('.octicon');
+    svg.style = svgOriginalStyle;
+  }
+
+  const createSearchItem = (title, link, index) => {
+    return `
+    <li class="color-bg-primary search-item d-flex flex-justify-start flex-items-center p-0 f5 navigation-item js-navigation-item js-jump-to-scoped-search"
+        role="option" aria-selected="false" tabindex="${index}">
+        <a onmouseover="onMouseOver(this)" onmouseleave="onMouseLeave(this)"
+          class="no-underline d-flex flex-auto flex-items-center jump-to-suggestions-path js-jump-to-suggestion-path js-navigation-open p-2"
+          href="${link}" data-item-type="scoped_search">
+          <div class="jump-to-octicon js-jump-to-octicon flex-shrink-0 mr-2 text-center ">
+            <svg title="Repository" aria-label="Repository" role="img" height="16" viewBox="0 0 16 16"
+              version="1.1" width="16" data-view-component="true"
+              class="octicon octicon-repo js-jump-to-octicon-repo  flex-shrink-0">
+              <path fill-rule="evenodd"
+                d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z">
+              </path>
+            </svg>
+          </div>    
+
+          <div
+            class="title jump-to-suggestion-name js-jump-to-suggestion-name flex-auto overflow-hidden text-left no-wrap css-truncate css-truncate-target">
+            ${title}
+          </div>
+
+          <div aria-hidden="true" style="color: var(--color-fg-muted);"
+            class="color-bg-primary js-jump border rounded-2 flex-shrink-0 color-bg-subtle px-1 ml-1 f6 d-on-nav-focus js-jump-to-badge-jump">
+            Jump to
+            <span class="d-inline-block ml-1 v-align-middle">↵</span>
+          </div>
+        </a>
+      </li>
+    `
+  }
+
+  const createGoogleSearchItem = (keyword) => {
+    return `
+    <li class="color-bg-primary search-item d-flex flex-justify-start flex-items-center p-0 f5 navigation-item js-navigation-item js-jump-to-scoped-search"
+        role="option" aria-selected="false" tabindex="0">
+        <a onmouseover="onMouseOver(this)" onmouseleave="onMouseLeave(this)"
+          class="no-underline d-flex flex-auto flex-items-center jump-to-suggestions-path js-jump-to-suggestion-path js-navigation-open p-2"
+          href="https://www.google.com/search?q=${keyword}" target="_blank" data-item-type="scoped_search">
+          <div class="jump-to-octicon js-jump-to-octicon flex-shrink-0 mr-2 text-center ">
+            <svg title="Search" aria-label="Search" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-search js-jump-to-octicon-search flex-shrink-0">
+                <path fill-rule="evenodd" d="M11.5 7a4.499 4.499 0 11-8.998 0A4.499 4.499 0 0111.5 7zm-.82 4.74a6 6 0 111.06-1.06l3.04 3.04a.75.75 0 11-1.06 1.06l-3.04-3.04z"></path>
+            </svg>
+          </div>    
+
+          <div
+            class="title jump-to-suggestion-name js-jump-to-suggestion-name flex-auto overflow-hidden text-left no-wrap css-truncate css-truncate-target">
+            ${keyword}
+          </div>
+
+          <div aria-hidden="true" style="color: var(--color-fg-muted);"
+            class="color-bg-primary js-jump border rounded-2 flex-shrink-0 color-bg-subtle px-1 ml-1 f6 d-on-nav-focus js-jump-to-badge-jump">
+            Google search
+            <span class="d-inline-block ml-1 v-align-middle">↵</span>
+          </div>
+        </a>
+      </li>
+    `
+  }
+
+  const stripHtml = (html) => {
+    let tmp = document.createElement('div');
+    tmp.innerHTML = html;
+
+    
+    const styles = tmp.getElementsByTagName('style');
+    while(styles[0]) {
+      styles[0].parentNode.removeChild(styles[0]);
+    }
+
+    
+    const scripts = tmp.getElementsByTagName('script');
+    while(scripts[0]) {
+      scripts[0].parentNode.removeChild(scripts[0]);
+    }
+    
+    return tmp.textContent || tmp.innerText || "";
+  }
+
+  const inputDom = document.querySelector(".Header-search-input");
+  const resultDom = document.getElementById('jump-to-results');
+  let debounceTimer;
+  let parser;
+  let xmlDoc;
+
+  const search = (_keyword) => {
+
+    resultDom.innerHTML = '';
+
+    const keyword = _keyword;
+
+    if (!keyword) return;
+
+    const progressDom = document.getElementById('search-progress');
+    if (progressDom && progressDom.classList.contains('d-none')) {
+      progressDom.classList.remove('d-none');
+    }
+
+    localStorage.setItem('keyword', keyword);
+    fetch(`${host.indexOf('localhost') > -1 ? 'http://' : 'https://'}${host}/index.xml`).then(resp => resp.text()).then(async (res) => {
+      parser = new DOMParser();
+      xmlDoc = parser.parseFromString(res, 'text/xml');
+      const linkResult = xmlDoc.getElementsByTagName('link');
+      const titleResult = xmlDoc.getElementsByTagName('title');
+      const arr = [];
+
+      const matched = [];
+      await (async function searchLink() {
+        for (let i = 0; i < linkResult.length; i++) {
+          await fetch(linkResult[i].textContent).then(resp => resp.text().then(res => {
+            const pureText = stripHtml(res);
+            if (pureText.indexOf(keyword) >= 0) {
+              matched.push(i);
+            }
+          }))
+        }
+      })();
+
+      const googleSearchItem = createGoogleSearchItem(keyword);
+      const node= document.createRange().createContextualFragment(googleSearchItem);
+      resultDom.appendChild(node);
+
+      matched.map((itemIndex, index) => {
+        const r = createSearchItem(titleResult[itemIndex].textContent, linkResult[itemIndex].textContent, index + 1);
+        const node = document.createRange().createContextualFragment(r);
+        resultDom.appendChild(node);
+      });
+
+      if (progressDom && !progressDom.classList.contains('d-none')) {
+        progressDom.classList.add('d-none');
+      }
+    });
+  }
+
+  const debounce = (callback, time) => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(callback, time);
+  };
+
+  ['focus', 'input'].forEach(event => {
+    inputDom.addEventListener(event, (e) => {
+      debounce(() => search(e.target.value), 500);
+    }, false);
+  });
+
+  inputDom.addEventListener('blur', () => {
+    setTimeout(() => {
+      resultDom.innerHTML = '';
+    }, 100);
+  });
+
+</script>
+
+
+
+
+
+
+</html>

@@ -296,9 +296,9 @@ Spring Boot가 자동으로 DispatcherServlet을 서블릿으로 등록함 (/ �
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -362,7 +362,8 @@ Spring Boot가 자동으로 DispatcherServlet을 서블릿으로 등록함 (/ �
 </span></span><span class="line"><span class="cl">      ↑
 </span></span><span class="line"><span class="cl">WebApplicationContext ← DispatcherServlet이 사용
 </span></span></code></pre></div><blockquote>
-<p><code>DispatcherServlet</code>은 이 context를 통해 빈을 찾고, 라우팅을 수행함</p></blockquote>
+<p><code>DispatcherServlet</code>은 이 context를 통해 빈을 찾고, 라우팅을 수행함</p>
+</blockquote>
 <hr>
 <h3 id="3-핵심-컴포넌트-초기화">3. <strong>핵심 컴포넌트 초기화</strong></h3>
 <p>DispatcherServlet 내부에서 아래와 같은 핵심 컴포넌트들이 초기화됨:</p>
@@ -405,18 +406,19 @@ Spring Boot가 자동으로 DispatcherServlet을 서블릿으로 등록함 (/ �
   </tbody>
 </table>
 <blockquote>
-<p>이 컴포넌트들은 Spring MVC의 요청 흐름에 참여함</p></blockquote>
+<p>이 컴포넌트들은 Spring MVC의 요청 흐름에 참여함</p>
+</blockquote>
 <hr>
 <h2 id="-dispatcherservlet-내부-구조-시퀀스-흐름">🧠 DispatcherServlet 내부 구조 (시퀀스 흐름)</h2>
 <p>클라이언트 요청이 DispatcherServlet에 들어오면 실행되는 핵심 메서드 흐름:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">doDispatch</span><span class="p">()</span><span class="w"> </span><span class="c1">// DispatcherServlet의 핵심 로직</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">getHandler</span><span class="p">()</span><span class="w">               </span><span class="c1">// HandlerMapping으로 컨트롤러 찾기</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">getHandlerAdapter</span><span class="p">()</span><span class="w">        </span><span class="c1">// HandlerAdapter로 실행 방식 결정</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">applyPreHandle</span><span class="p">()</span><span class="w">           </span><span class="c1">// 인터셉터 preHandle 실행</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">handlerAdapter</span><span class="p">.</span><span class="na">handle</span><span class="p">()</span><span class="w">    </span><span class="c1">// 실제 컨트롤러 실행</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">applyPostHandle</span><span class="p">()</span><span class="w">          </span><span class="c1">// 인터셉터 postHandle 실행</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">processDispatchResult</span><span class="p">()</span><span class="w">    </span><span class="c1">// 뷰 리졸빙, 예외 처리 등</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">└──</span><span class="w"> </span><span class="n">render</span><span class="p">()</span><span class="w">                   </span><span class="c1">// ViewResolver 통해 뷰 렌더링</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">getHandler</span><span class="p">()</span><span class="w">               </span><span class="c1">// HandlerMapping으로 컨트롤러 찾기</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">getHandlerAdapter</span><span class="p">()</span><span class="w">        </span><span class="c1">// HandlerAdapter로 실행 방식 결정</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">applyPreHandle</span><span class="p">()</span><span class="w">           </span><span class="c1">// 인터셉터 preHandle 실행</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">handlerAdapter</span><span class="p">.</span><span class="na">handle</span><span class="p">()</span><span class="w">    </span><span class="c1">// 실제 컨트롤러 실행</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">applyPostHandle</span><span class="p">()</span><span class="w">          </span><span class="c1">// 인터셉터 postHandle 실행</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">├──</span><span class="w"> </span><span class="n">processDispatchResult</span><span class="p">()</span><span class="w">    </span><span class="c1">// 뷰 리졸빙, 예외 처리 등</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="err">└──</span><span class="w"> </span><span class="n">render</span><span class="p">()</span><span class="w">                   </span><span class="c1">// ViewResolver 통해 뷰 렌더링</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h2 id="-구조-그림-요약-텍스트-버전">📦 구조 그림 요약 (텍스트 버전)</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">[Client 요청]
@@ -433,11 +435,11 @@ Spring Boot가 자동으로 DispatcherServlet을 서블릿으로 등록함 (/ �
 <h2 id="-dispatcherservlet-설정-관련-팁">🔧 DispatcherServlet 설정 관련 팁</h2>
 <p>Spring Boot에서는 대부분 자동 설정되지만, 직접 설정도 가능해요:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Bean</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">DispatcherServlet</span><span class="w"> </span><span class="nf">dispatcherServlet</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">DispatcherServlet</span><span class="w"> </span><span class="nf">dispatcherServlet</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">DispatcherServlet</span><span class="w"> </span><span class="n">ds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DispatcherServlet</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ds</span><span class="p">.</span><span class="na">setThrowExceptionIfNoHandlerFound</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// 404 예외 발생</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ds</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h2 id="-요약">✅ 요약</h2>
 <table>

@@ -299,9 +299,9 @@ f(f(x)) = f(x) 예시 (수학적 관점) 절댓값 함수: | |x|| = |x| 집합�
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -446,7 +446,7 @@ f(f(x)) = f(x) 예시 (수학적 관점) 절댓값 함수: | |x|| = |x| 집합�
 <p>좋습니다! 멱등성을 고려한 API 설계 패턴과 <strong>재시도-safe한 시스템 구현 예제</strong>를 구체적으로 정리해드리겠습니다.</p>
 <hr>
 <h2 id="-1-멱등성을-고려한-api-설계-패턴">🧱 1. 멱등성을 고려한 API 설계 패턴</h2>
-<h3 id="-패턴-1-put-사용으로-자원-전체-덮어쓰기">✅ 패턴 1: <strong><code>PUT</code> 사용으로 자원 전체 덮어쓰기</strong></h3>
+<h3 id="-패턴-1-put">✅ 패턴 1: <strong><code>PUT</code> 사용으로 자원 전체 덮어쓰기</strong></h3>
 <ul>
 <li>
 <p><strong>설명</strong>: 동일한 요청을 여러 번 보내도 항상 자원이 같은 상태로 유지됨.</p>
@@ -464,7 +464,7 @@ f(f(x)) = f(x) 예시 (수학적 관점) 절댓값 함수: | |x|| = |x| 집합�
 </li>
 </ul>
 <hr>
-<h3 id="-패턴-2-클라이언트에서-idempotency-key-사용">✅ 패턴 2: <strong>클라이언트에서 <code>idempotency key</code> 사용</strong></h3>
+<h3 id="-패턴-2-클라이언트에서">✅ 패턴 2: <strong>클라이언트에서 <code>idempotency key</code> 사용</strong></h3>
 <ul>
 <li>
 <p><strong>설명</strong>: 중복 요청을 방지하기 위해 요청에 고유 식별자(예: UUID)를 함께 전송.</p>
@@ -533,7 +533,7 @@ Body: {
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">paymentRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">log</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><h4 id="결과">결과:</h4>
 <ul>
 <li>같은 결제 요청을 재시도해도 <strong>중복 결제 없이</strong> 이전 결제 결과를 그대로 반환함.</li>

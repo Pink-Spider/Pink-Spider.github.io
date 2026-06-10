@@ -302,9 +302,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -519,9 +519,9 @@
 <li>
 <p>애플리케이션 내 샤드 키 기반 분기 로직 구현</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 예시: Java에서 MySQL 샤딩</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">int</span><span class="w"> </span><span class="n">shardCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">4</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">int</span><span class="w"> </span><span class="n">shardId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">shardCount</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">DataSource</span><span class="w"> </span><span class="n">ds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataSources</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">shardId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="w"> </span><span class="n">shardCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">4</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="w"> </span><span class="n">shardId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">shardCount</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">DataSource</span><span class="w"> </span><span class="n">ds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataSources</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">shardId</span><span class="p">);</span><span class="w">
 </span></span></span></code></pre></div></li>
 <li>
 <p>또는 ProxySQL, HAProxy, Mycat, Vitess 같은 샤딩 프록시 솔루션 도입</p>

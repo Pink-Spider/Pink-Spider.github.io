@@ -296,9 +296,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -385,7 +385,7 @@
 <hr>
 <h2 id="-spring-boot에서-property-based-test-사용하는-방법">🧪 Spring Boot에서 Property-Based Test 사용하는 방법</h2>
 <p>Spring Boot 자체는 JUnit을 기반으로 한 단위 테스트가 기본이며, <strong>PBT는 외부 라이브러리를 사용해서 통합</strong>하는 것이 일반적입니다. 가장 널리 쓰이는 Java 기반 라이브러리는 다음과 같습니다:</p>
-<h3 id="1-jqwikhttpsjqwiknet-사용">1. <strong><a href="https://jqwik.net/">jqwik</a></strong> 사용</h3>
+<h3 id="1-jqwik-사용">1. <strong><a href="https://jqwik.net/">jqwik</a></strong> 사용</h3>
 <p><code>jqwik</code>은 Java와 JUnit 5를 기반으로 한 property-based 테스트 프레임워크입니다.</p>
 <h4 id="-maven-의존성-추가">🔧 Maven 의존성 추가:</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
@@ -397,7 +397,7 @@
 </span></span></code></pre></div><h4 id="-예시-코드">✍️ 예시 코드:</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">net.jqwik.api.*</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">StringProperties</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">StringProperties</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Property</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">reverseOfReverseIsOriginal</span><span class="p">(</span><span class="nd">@ForAll</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -408,7 +408,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">lengthIsNonNegative</span><span class="p">(</span><span class="nd">@ForAll</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="na">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><h4 id="-spring과-함께-사용하기">➕ Spring과 함께 사용하기:</h4>
 <p>Spring Boot 테스트와 <code>@SpringBootTest</code>를 섞을 수도 있지만, 일반적으로 <strong>Pure Function</strong>, 즉 순수 함수 테스트에 주로 사용되므로, Spring Context를 불러오지 않고 테스트하는 것이 일반적입니다.</p>
 <h3 id="2-quicktheories-또는-junit-quickcheck도-있음">2. <strong>QuickTheories</strong> 또는 <strong>JUnit-Quickcheck</strong>도 있음</h3>

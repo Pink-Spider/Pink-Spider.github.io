@@ -290,9 +290,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -390,7 +390,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 정리: 쓰이지 않는 객체 제거</span>
 </span></span><span class="line"><span class="cl">git gc --aggressive --prune<span class="o">=</span>all
 </span></span></code></pre></div><hr>
-<h2 id="-핵심-질문-기존-main에서-분기한-브랜치들은-어떻게-되는가">🧨 핵심 질문: <strong>기존 <code>main</code>에서 분기한 브랜치들은 어떻게 되는가?</strong></h2>
+<h2 id="-핵심-질문-기존">🧨 핵심 질문: <strong>기존 <code>main</code>에서 분기한 브랜치들은 어떻게 되는가?</strong></h2>
 <h3 id="-로컬-분기branch">✅ <strong>로컬 분기(branch)</strong></h3>
 <ul>
 <li>기존 <code>main</code>에서 분기한 **로컬 브랜치들(<code>dev</code>, <code>feature/xxx</code> 등)**은 여전히 존재하고, 기존 커밋 히스토리를 그대로 유지합니다.</li>
@@ -510,7 +510,8 @@ dev:          D---E   ← 여전히 존재하지만 연결은 끊김
 </span></span><span class="line"><span class="cl"><span class="c1"># 7. 강제 푸시 (주의!)</span>
 </span></span><span class="line"><span class="cl">git push -f origin main
 </span></span></code></pre></div><blockquote>
-<p>💡 강제 푸시 전, GitHub의 기본 브랜치가 <code>main</code>인지 확인하고, 혹시 모를 문제에 대비해 백업 브랜치를 <code>origin</code>에도 푸시해두세요:</p></blockquote>
+<p>💡 강제 푸시 전, GitHub의 기본 브랜치가 <code>main</code>인지 확인하고, 혹시 모를 문제에 대비해 백업 브랜치를 <code>origin</code>에도 푸시해두세요:</p>
+</blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin backup-main-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
 </span></span></code></pre></div><hr>
 <h2 id="-팀원에게-꼭-공지할-사항">📣 팀원에게 꼭 공지할 사항</h2>
@@ -607,7 +608,8 @@ dev:          D---E   ← 여전히 존재하지만 연결은 끊김
 </span></span><span class="line"><span class="cl"><span class="c1"># 필요한 커밋만 가져오기</span>
 </span></span><span class="line"><span class="cl">git cherry-pick &lt;커밋해시1&gt; &lt;커밋해시2&gt; ...
 </span></span></code></pre></div><blockquote>
-<p>cherry-pick 시 충돌이 생기면 수동으로 해결 후 <code>git cherry-pick --continue</code> 하시면 됩니다.</p></blockquote>
+<p>cherry-pick 시 충돌이 생기면 수동으로 해결 후 <code>git cherry-pick --continue</code> 하시면 됩니다.</p>
+</blockquote>
 <hr>
 <h2 id="-선택지-3-패치-방식으로-적용-format-patch--am">🔧 선택지 3: 패치 방식으로 적용 (<code>format-patch</code> + <code>am</code>)</h2>
 <h3 id="1-기존-브랜치의-커밋을-패치로-저장">1. 기존 브랜치의 커밋을 패치로 저장</h3>
@@ -620,7 +622,8 @@ dev:          D---E   ← 여전히 존재하지만 연결은 끊김
 </span></span><span class="line"><span class="cl">git checkout -b new-feature
 </span></span><span class="line"><span class="cl">git am 000*.patch
 </span></span></code></pre></div><blockquote>
-<p>충돌 시 <code>git am --abort</code>로 취소 가능.</p></blockquote>
+<p>충돌 시 <code>git am --abort</code>로 취소 가능.</p>
+</blockquote>
 <hr>
 <h2 id="-예시-시나리오">📘 예시 시나리오</h2>
 <h3 id="팀원-alice의-기존-브랜치-featurelogin">팀원 Alice의 기존 브랜치 <code>feature/login</code></h3>

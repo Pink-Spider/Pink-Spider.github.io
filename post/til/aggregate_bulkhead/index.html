@@ -296,9 +296,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -363,7 +363,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">items</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">OrderItem</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">recalculateTotalPrice</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>→ <code>Order</code>는 <code>OrderItem</code>을 직접 관리하며, 외부에서는 <code>Order</code>를 통해서만 <code>OrderItem</code>에 접근 가능하도록 합니다.
 이로써 <strong>데이터의 일관성과 트랜잭션 범위를 제어</strong>할 수 있습니다.</p>
 <h3 id="-사용-목적">🚀 사용 목적</h3>
@@ -389,9 +389,9 @@
 </ul>
 <h3 id="-예시-resilience4j-또는-spring-cloud">📘 예시 (Resilience4j 또는 Spring Cloud)</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Bulkhead</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;paymentService&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Bulkhead</span><span class="p">.</span><span class="na">Type</span><span class="p">.</span><span class="na">THREADPOOL</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">PaymentResponse</span><span class="w"> </span><span class="nf">callPaymentService</span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">PaymentResponse</span><span class="w"> </span><span class="nf">callPaymentService</span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">paymentClient</span><span class="p">.</span><span class="na">pay</span><span class="p">(</span><span class="n">order</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>→ <code>paymentService</code> 호출에 대한 스레드 풀을 분리하여, 장애 발생 시 다른 서비스(<code>shippingService</code>, <code>inventoryService</code>)는 영향받지 않습니다.</p>
 <h3 id="-사용-목적-1">🚀 사용 목적</h3>
 <ul>

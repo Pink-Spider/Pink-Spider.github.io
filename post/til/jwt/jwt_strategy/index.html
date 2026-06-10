@@ -293,9 +293,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -366,7 +366,7 @@
 <hr>
 <h3 id="1-토큰-생성-클래스-jwtprovider"><strong>1. 토큰 생성 클래스 (JwtProvider)</strong></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JwtProvider</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JwtProvider</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">secretKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;yourSecretKey&#34;</span><span class="p">;</span><span class="w"> </span><span class="c1">// 적절히 암호화 필요</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">accessTokenValidity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">1000L</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">15</span><span class="p">;</span><span class="w">  </span><span class="c1">// 15분</span><span class="w">
@@ -406,11 +406,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h3 id="2-로그인-시-토큰-발급"><strong>2. 로그인 시 토큰 발급</strong></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">LoginRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">LoginRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 인증 처리 (생략)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;user-id&#34;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -421,11 +421,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">refreshTokenService</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">TokenResponse</span><span class="p">(</span><span class="n">accessToken</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h3 id="3-access-token-만료-시-refresh-token으로-재발급"><strong>3. Access Token 만료 시 Refresh Token으로 재발급</strong></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&#34;/token/refresh&#34;</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">refreshToken</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">TokenRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">refreshToken</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">TokenRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">refreshToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getRefreshToken</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">validateToken</span><span class="p">(</span><span class="n">refreshToken</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -442,11 +442,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">newAccessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">createAccessToken</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">TokenResponse</span><span class="p">(</span><span class="n">newAccessToken</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h3 id="4-refresh-token-저장-예시-redis-기반"><strong>4. Refresh Token 저장 예시 (Redis 기반)</strong></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Service</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RefreshTokenService</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RefreshTokenService</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">RedisTemplate</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -461,7 +461,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><hr>
 <h2 id="q-에시에서-refreshtoken-에서-refresh-save전에-기존꺼는-안지워도-될까">Q. 에시에서 RefreshToken 에서 refresh save전에 기존꺼는 안지워도 될까?</h2>
 <h2 id="a-일반적으로는-기존-refresh-token을-삭제하거나-덮어써야-합니다">A. 일반적으로는 <strong>기존 Refresh Token을 삭제하거나 덮어써야 합니다</strong>.</h2>
@@ -489,7 +489,7 @@
 <li>보안 강화가 목적이라면 <strong>토큰 변경 시마다 재발급 및 교체하는 방식</strong>이 맞습니다.</li>
 </ul>
 <h2 id="q-refresh-token이-만료되면-갱신은-어떻게-하나요">Q. refresh token이 만료되면 갱신은 어떻게 하나요?</h2>
-<h2 id="a-refresh-token이-만료된-경우에는-자동-갱신할-수-없고-사용자는-_재로그인_-해야-합니다">A. <strong>Refresh Token이 만료된 경우에는 자동 갱신할 수 없고, 사용자는 <em>재로그인</em> 해야 합니다.</strong></h2>
+<h2 id="a-refresh-token이-만료된-경우에는-자동-갱신할-수-없고-사용자는">A. <strong>Refresh Token이 만료된 경우에는 자동 갱신할 수 없고, 사용자는 <em>재로그인</em> 해야 합니다.</strong></h2>
 <p>즉, 유저 인증을 다시 받아야 새로운 Access/Refresh Token을 발급할 수 있어요.</p>
 <hr>
 <h3 id="-갱신-흐름-정리">🔁 갱신 흐름 정리</h3>
@@ -543,7 +543,8 @@
 <hr>
 <h3 id="-1-refresh-token-rotation--sliding-expiration-슬라이딩-만료">✅ 1. <strong>Refresh Token Rotation + Sliding Expiration (슬라이딩 만료)</strong></h3>
 <blockquote>
-<p>만료 시간을 매번 연장하는 방식</p></blockquote>
+<p>만료 시간을 매번 연장하는 방식</p>
+</blockquote>
 <h4 id="-어떻게-작동하나요">🔄 어떻게 작동하나요?</h4>
 <ul>
 <li>사용자가 <strong>Refresh Token으로 Access Token을 재발급할 때마다</strong>,<br>
@@ -563,7 +564,8 @@
 <hr>
 <h3 id="-2-long-lived-refresh-token">✅ 2. <strong>Long-lived Refresh Token</strong></h3>
 <blockquote>
-<p>Refresh Token을 <strong>매우 길게</strong> 설정 (예: 180일)</p></blockquote>
+<p>Refresh Token을 <strong>매우 길게</strong> 설정 (예: 180일)</p>
+</blockquote>
 <ul>
 <li>토큰 자체는 그대로지만, 서버에서 <strong>마지막 사용 시간</strong>을 기준으로 만료 처리</li>
 <li>또는 그냥 클라이언트에 오래 살아있는 refresh token을 두는 전략</li>
@@ -582,7 +584,8 @@
 <blockquote>
 <p>OAuth2 기반에서는 <strong>Refresh Token이 만료되더라도</strong>,<br>
 <strong>사용자가 여전히 세션에 로그인되어 있다면</strong>,<br>
-<strong>백그라운드에서 재로그인 요청</strong>이 가능함</p></blockquote>
+<strong>백그라운드에서 재로그인 요청</strong>이 가능함</p>
+</blockquote>
 <ul>
 <li>예: Google OAuth → <code>prompt=none</code> 파라미터로 로그인 페이지 없이 다시 인증 가능</li>
 <li>조건: 사용자가 아직 Google에 로그인 상태여야 함</li>
@@ -616,7 +619,8 @@
 <blockquote>
 <p>Refresh Token 없이 로그인 유지하는 건 <strong>보안 리스크</strong>가 크지만,<br>
 &ldquo;갱신 전략&quot;이나 &ldquo;OAuth 세션 기반 재인증&rdquo; 등을 잘 활용하면,<br>
-UX와 보안 사이 균형을 잡을 수 있어요.</p></blockquote>
+UX와 보안 사이 균형을 잡을 수 있어요.</p>
+</blockquote>
 <hr>
 </article>
               </div>

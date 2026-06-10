@@ -305,9 +305,9 @@ name: Build and Deploy on: push: branches: - develop jobs: build-and-deploy: run
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 08 Dec 2025 08:41:47 &#43;0900"
+                  Modified <relative-time datetime="Tue, 31 Mar 2026 10:11:39 &#43;0900"
                     class="no-wrap">
-                    Mon, 08 Dec 2025 08:41:47 &#43;0900</relative-time>
+                    Tue, 31 Mar 2026 10:11:39 &#43;0900</relative-time>
                   
                 </div>
               </div>
@@ -366,12 +366,12 @@ name: Build and Deploy on: push: branches: - develop jobs: build-and-deploy: run
 <p>action 설정이나 slack webhoook url 설정하는 방법은 다른 블로그에도 많으니 생략하겠습니다.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build and Deploy</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">on</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">on</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">develop</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">jobs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">build-and-deploy</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-latest</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -458,43 +458,43 @@ name: Build and Deploy on: push: branches: - develop jobs: build-and-deploy: run
 <p>deploy.sh</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#!/bin/sh</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">PROJECT=$1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">PROFILE=$2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">HOMEDIR=$3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">MEM_ALLOC=$4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">PROJECT=$1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">PROFILE=$2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">HOMEDIR=$3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">MEM_ALLOC=$4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">APP_DIR=${HOMEDIR}/backend</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">JAR_PREFIX=${APP_DIR}/${PROJECT}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">APP_DIR=${HOMEDIR}/backend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">JAR_PREFIX=${APP_DIR}/${PROJECT}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># JAR_NAME이 실제 존재하는 파일인지 확인</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">JAR_NAME=$(ls ${JAR_PREFIX}-*exec.jar 2&gt;/dev/null | head -n 1)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># JAR_NAME이 실제 존재하는 파일인지 확인</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">JAR_NAME=$(ls ${JAR_PREFIX}-*exec.jar 2&gt;/dev/null | head -n 1)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">JAR_CURRENT_PID=$(ps -ef | grep ${JAR_PREFIX} | grep -v grep | awk &#39;{print $2}&#39;)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">JAR_CURRENT_PID=$(ps -ef | grep ${JAR_PREFIX} | grep -v grep | awk &#39;{print $2}&#39;)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">echo &#34;APP_DIR = $APP_DIR&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">echo &#34;JAR_PREFIX = $JAR_PREFIX&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">echo &#34;JAR_NAME  = $JAR_NAME&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">echo &#34;APP_DIR = $APP_DIR&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">echo &#34;JAR_PREFIX = $JAR_PREFIX&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">echo &#34;JAR_NAME  = $JAR_NAME&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">if [ -z &#34;${JAR_CURRENT_PID}&#34; ]; then</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">if [ -z &#34;${JAR_CURRENT_PID}&#34; ]; then</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">echo &#34;&gt; no process is running&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">else</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">else</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">echo &#34;&gt; kill project name : ${JAR_PREFIX} ${JAR_CURRENT_PID}&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">kill -9 ${JAR_CURRENT_PID}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">sleep 3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">fi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">fi</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># JAR_NAME이 존재하는지 확인</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">if [ -z &#34;$JAR_NAME&#34; ]; then</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># JAR_NAME이 존재하는지 확인</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">if [ -z &#34;$JAR_NAME&#34; ]; then</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">echo &#34;❌ No JAR file found! Exiting...&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">exit 1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">fi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">fi</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 실행 명령어를 문자열로 저장 후 실행</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">COMMAND=&#34;nohup setsid java --add-exports=java.base/com.sun.crypto.provider=ALL-UNNAMED -jar -Xmx${MEM_ALLOC} -Dspring.profiles.active=${PROFILE} ${JAR_NAME} &gt;&gt; /dev/null 2&gt;&amp;1 &amp;&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">echo &#34;Executing: $COMMAND&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">eval $COMMAND</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># 실행 명령어를 문자열로 저장 후 실행</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">COMMAND=&#34;nohup setsid java --add-exports=java.base/com.sun.crypto.provider=ALL-UNNAMED -jar -Xmx${MEM_ALLOC} -Dspring.profiles.active=${PROFILE} ${JAR_NAME} &gt;&gt; /dev/null 2&gt;&amp;1 &amp;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">echo &#34;Executing: $COMMAND&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">eval $COMMAND</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">echo &#34;✅ Application started successfully!&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">echo &#34;✅ Application started successfully!&#34;</span><span class="w">
 </span></span></span></code></pre></div></li>
 </ul>
 </article>
