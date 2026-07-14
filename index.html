@@ -715,6 +715,108 @@
                       d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z">
                     </path>
                   </svg>
+                  <a class="text-bold flex-auto min-width-0" href="https://pink-spider.github.io/post/spring/spring_boot3_vs4/">
+                    <span class="repo" title="Spring Boot 3.5 vs 4.0 완벽 비교 정리">Spring Boot 3.5 vs 4.0 완벽 비교 정리</span>
+                  </a>
+                </div>
+
+
+                <div name="summary" class="pinned-item-desc text-gray text-small d-block mt-2 mb-3">
+                  <p>Spring Boot 4.0이 <strong>2025년 11월 20일 GA(General Availability, 정식 안정 버전)</strong> 로 출시되었습니다.
+Spring Boot 3.5.x 대비 꽤 큰 변화가 있어, 주요 차이점을 용어 설명과 함께 정리했습니다.</p>
+<hr>
+<h2 id="릴리즈--지원-주기">릴리즈 &amp; 지원 주기</h2>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Spring Boot 3.5.x</th>
+          <th>Spring Boot 4.0</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>상태</td>
+          <td>안정 버전</td>
+          <td>GA (2025.11.20 출시)</td>
+      </tr>
+      <tr>
+          <td>OSS 지원 종료</td>
+          <td>2026년 6월</td>
+          <td>현재 활성 지원 중</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>⚠️ Spring Boot 3.5.x는 2026년 6월에 지원이 종료됩니다. 프로덕션 서비스라면 마이그레이션 계획을 미리 세워두는 것이 좋습니다.</p>
+</blockquote>
+<hr>
+<h2 id="java--플랫폼-기준선">Java &amp; 플랫폼 기준선</h2>
+<ul>
+<li><strong>Java 최소 요구 버전</strong>: 17 (3.5와 동일)</li>
+<li><strong>Java 25 first-class 지원</strong> 추가 — AOT 컴파일 및 GraalVM 네이티브 이미지가 Java 25 기준으로 테스트됨</li>
+<li><strong>Jakarta EE 기준이 11로 상향</strong> → Hibernate 7.x, Bean Validation 3.1, Tomcat 11 필수</li>
+</ul>
+<blockquote>
+<p>⚠️ <code>javax.*</code> 임포트가 아직 남아있다면 전부 <code>jakarta.*</code>로 교체해야 합니다.</p>
+                </div>
+
+                <p class="mb-0 f6 text-gray">
+                  
+                  
+                  <a href="/tags/java" class="pinned-item-meta muted-link ">
+                    <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                      <path fill-rule="evenodd"
+                        d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                      </path>
+                    </svg>
+                    Java
+                  </a>
+                  
+                  <a href="/tags/spring-boot" class="pinned-item-meta muted-link ">
+                    <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                      <path fill-rule="evenodd"
+                        d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                      </path>
+                    </svg>
+                    Spring Boot
+                  </a>
+                  
+                  <a href="/tags/spring" class="pinned-item-meta muted-link ">
+                    <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                      <path fill-rule="evenodd"
+                        d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                      </path>
+                    </svg>
+                    Spring
+                  </a>
+                  
+                  <a href="/tags/backend" class="pinned-item-meta muted-link ">
+                    <svg class="octicon octicon-tag" viewBox="0 0 16 16" version="1.1" width="16" height="16">
+                      <path fill-rule="evenodd"
+                        d="M2.5 7.775V2.75a.25.25 0 01.25-.25h5.025a.25.25 0 01.177.073l6.25 6.25a.25.25 0 010 .354l-5.025 5.025a.25.25 0 01-.354 0l-6.25-6.25a.25.25 0 01-.073-.177zm-1.5 0V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 010 2.474l-5.026 5.026a1.75 1.75 0 01-2.474 0l-6.25-6.25A1.75 1.75 0 011 7.775zM6 5a1 1 0 100 2 1 1 0 000-2z">
+                      </path>
+                    </svg>
+                    Backend
+                  </a>
+                  
+                  
+                </p>
+              </div>
+            </div>
+          </li>
+          
+          <li class="col-12 col-md-6 col-lg-6 mb-3 d-flex flex-content-stretch">
+            <div
+              class="Box pinned-item-list-item d-flex p-3 width-full js-pinned-item-list-item public source reorderable sortable-button-item">
+              <div class="pinned-item-list-item-content">
+                <div class="d-flex width-full flex-items-center position-relative">
+                  <svg class="octicon octicon-repo mr-2 text-gray flex-shrink-0" viewBox="0 0 16 16" version="1.1"
+                    width="16" height="16">
+                    <path fill-rule="evenodd"
+                      d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z">
+                    </path>
+                  </svg>
                   <a class="text-bold flex-auto min-width-0" href="https://pink-spider.github.io/post/infra/db/mysql_collation/">
                     <span class="repo" title="MySQL Collation 완전 정복">MySQL Collation 완전 정복</span>
                   </a>
@@ -816,46 +918,6 @@
             </div>
           </li>
           
-          <li class="col-12 col-md-6 col-lg-6 mb-3 d-flex flex-content-stretch">
-            <div
-              class="Box pinned-item-list-item d-flex p-3 width-full js-pinned-item-list-item public source reorderable sortable-button-item">
-              <div class="pinned-item-list-item-content">
-                <div class="d-flex width-full flex-items-center position-relative">
-                  <svg class="octicon octicon-repo mr-2 text-gray flex-shrink-0" viewBox="0 0 16 16" version="1.1"
-                    width="16" height="16">
-                    <path fill-rule="evenodd"
-                      d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z">
-                    </path>
-                  </svg>
-                  <a class="text-bold flex-auto min-width-0" href="https://pink-spider.github.io/post/infra/redis/redis_streams/">
-                    <span class="repo" title="Redis pub/sub 과 streams">Redis pub/sub 과 streams</span>
-                  </a>
-                </div>
-
-
-                <div name="summary" class="pinned-item-desc text-gray text-small d-block mt-2 mb-3">
-                  <p>Redis를 활용한 메시징 시스템의 두 기능은 모두 &ldquo;데이터를 전달한다&quot;는 목적은 같지만, **철학(Philosophy)**과 <strong>데이터 보존 방식</strong>에서 결정적인 차이가 있습니다.</p>
-<p>한마디로 요약하자면: **Pub/Sub은 &lsquo;방송&rsquo;**이고, **Streams는 &lsquo;기록이 남는 로그&rsquo;**입니다.</p>
-<hr>
-<h2 id="1-redis-pubsub-publishsubscribe">1. Redis Pub/Sub (Publish/Subscribe)</h2>
-<p>가장 전통적인 형태의 메시징 모델입니다. 발신자가 메시지를 던지면, 그 순간 연결되어 있는 모든 수신자에게 실시간으로 전달됩니다.</p>
-<ul>
-<li><strong>휘발성 (Fire and Forget):</strong> 메시지를 보낸 후 어디에도 저장하지 않습니다. 수신자가 오프라인 상태라면 그 메시지는 영원히 사라집니다.</li>
-<li><strong>실시간성:</strong> 지연 시간이 거의 없어 실시간 알림이나 채팅에 적합합니다.</li>
-<li><strong>팬아웃(Fan-out):</strong> 하나의 메시지를 수천 명의 구독자에게 동시에 뿌릴 때 매우 효율적입니다.</li>
-</ul>
-<hr>
-<h2 id="2-redis-streams">2. Redis Streams</h2>
-<p>Kafka와 유사한 기능을 Redis에 구현한 모델입니다. 단순 전달을 넘어 데이터의 &lsquo;이력&rsquo;을 관리합니다.</p>
-                </div>
-
-                <p class="mb-0 f6 text-gray">
-                  
-                </p>
-              </div>
-            </div>
-          </li>
-          
         </ol>
       </div>
     </div>
@@ -866,6 +928,12 @@
   "title": "Null%20Safety%eb%9e%80%20%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80?%20%ea%b0%9c%eb%85%90%eb%b6%80%ed%84%b0%20%ec%8b%a4%ec%a0%84%20%ec%98%88%ec%8b%9c%ea%b9%8c%ec%a7%80",
   "link": "https://pink-spider.github.io/post/til/null-safety/",
   "publishDate": "2026-07-13%2011:00:00"
+},
+
+{
+  "title": "Spring%20Boot%203.5%20vs%204.0%20%ec%99%84%eb%b2%bd%20%eb%b9%84%ea%b5%90%20%ec%a0%95%eb%a6%ac",
+  "link": "https://pink-spider.github.io/post/spring/spring_boot3_vs4/",
+  "publishDate": "2026-06-16%2020:20:45"
 },
 
 {
@@ -1484,12 +1552,6 @@
   "title": "Clean%20Code%20%ec%84%9c%eb%a1%a0",
   "link": "https://pink-spider.github.io/post/book/clean_code/clean_code_intro/",
   "publishDate": "2024-11-27%2017:14:05"
-},
-
-{
-  "title": "Spring%20Boot%203.5%20vs%204.0%20%ec%99%84%eb%b2%bd%20%eb%b9%84%ea%b5%90%20%ec%a0%95%eb%a6%ac",
-  "link": "https://pink-spider.github.io/post/spring/spring_boot3_vs4/",
-  "publishDate": "0001-01-01%2000:00:00"
 }
 ]'>
       <div class="js-yearly-contributions">

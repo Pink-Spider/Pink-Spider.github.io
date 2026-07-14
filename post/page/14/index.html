@@ -771,6 +771,159 @@
           <div class="col-12 d-inline-block">
             <div class="d-inline-block mb-1">
               <h3 class="wb-break-all">
+                <a href="https://pink-spider.github.io/post/til/jwt/jwt_strategy/">jwt 관련 Tip</a>
+              </h3>
+            </div>
+
+            <div>
+              <div class="col-12 d-inline-block text-gray mb-2 pr-4">
+                <h1 id="jwt-관련-tip">jwt 관련 Tip</h1>
+<h2 id="q-access-token-이-만료되면-refresh-token을-통해-재발행-한다-refresh-token은-만료-기간이-없을까">Q. access token 이 만료되면, refresh token을 통해 재발행 한다. refresh token은 만료 기간이 없을까?</h2>
+<h2 id="a-refresh-token도-반드시-만료-기간이-있어야-합니다">A. <code>Refresh Token</code>도 <strong>반드시 만료 기간이 있어야</strong> 합니다.</h2>
+<ul>
+<li>일반적으로는 <code>Access Token</code>보다 <strong>훨씬 긴 만료 기간</strong>을 설정할 뿐이에요.</li>
+</ul>
+<h3 id="1-일반적인-만료-시간-설정">1. 일반적인 만료 시간 설정</h3>
+<ul>
+<li><strong>Access Token</strong>: 보통 <strong>15분 ~ 1시간</strong></li>
+<li><strong>Refresh Token</strong>: 보통 <strong>7일 ~ 30일</strong> 또는 <strong>90일</strong></li>
+</ul>
+<hr>
+<h3 id="2-왜-refresh-token도-만료-기간이-필요한가">2. 왜 Refresh Token도 만료 기간이 필요한가?</h3>
+<ul>
+<li>Refresh Token이 <strong>유출되었을 경우</strong>, 무제한으로 Access Token을 재발급받을 수 있다면 <strong>보안에 치명적</strong>입니다.</li>
+<li>일정 기간이 지나면 <strong>로그인 세션을 재확인</strong>하거나 <strong>재로그인</strong>을 유도하는 것이 보안상 더 안전합니다.</li>
+</ul>
+<hr>
+<h3 id="3-저장-위치는">3. 저장 위치는?</h3>
+<ul>
+<li>Refresh Token은 보통 <strong>서버 저장 방식</strong> (e.g., Redis)에 저장하고, 사용자에게는 식별자만 전달하거나 클라이언트에 저장하되 <strong>보안적으로 안전한 저장소</strong> (e.g., Secure Cookie, LocalStorage X) 를 사용하는 것이 권장됩니다.</li>
+</ul>
+<hr>
+<h2 id="q-spring-boot에서의-예시">Q. Spring Boot에서의 예시</h2>
+<h2 id="a-spring-boot에서-jwt-기반으로-access-token과-refresh-token을-발급-및-재발급하는-기본적인-구조를-예시">A. Spring Boot에서 JWT 기반으로 Access Token과 Refresh Token을 발급 및 재발급하는 기본적인 구조를 예시</h2>
+<hr>
+<h3 id="1-토큰-생성-클래스-jwtprovider"><strong>1. 토큰 생성 클래스 (JwtProvider)</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JwtProvider</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">secretKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;yourSecretKey&#34;</span><span class="p">;</span><span class="w"> </span><span class="c1">// 적절히 암호화 필요</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">accessTokenValidity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">1000L</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">15</span><span class="p">;</span><span class="w">  </span><span class="c1">// 15분</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">refreshTokenValidity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">1000L</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">24</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">14</span><span class="p">;</span><span class="w"> </span><span class="c1">// 14일</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">createAccessToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">createToken</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">accessTokenValidity</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">createRefreshToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">createToken</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">refreshTokenValidity</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">createToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">validity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Claims</span><span class="w"> </span><span class="n">claims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Jwts</span><span class="p">.</span><span class="na">claims</span><span class="p">().</span><span class="na">setSubject</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">expiry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">(</span><span class="n">now</span><span class="p">.</span><span class="na">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">validity</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Jwts</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">setClaims</span><span class="p">(</span><span class="n">claims</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">setIssuedAt</span><span class="p">(</span><span class="n">now</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">setExpiration</span><span class="p">(</span><span class="n">expiry</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">signWith</span><span class="p">(</span><span class="n">SignatureAlgorithm</span><span class="p">.</span><span class="na">HS256</span><span class="p">,</span><span class="w"> </span><span class="n">secretKey</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">compact</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getUserIdFromToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Jwts</span><span class="p">.</span><span class="na">parser</span><span class="p">().</span><span class="na">setSigningKey</span><span class="p">(</span><span class="n">secretKey</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">parseClaimsJws</span><span class="p">(</span><span class="n">token</span><span class="p">).</span><span class="na">getBody</span><span class="p">().</span><span class="na">getSubject</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">validateToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Jwts</span><span class="p">.</span><span class="na">parser</span><span class="p">().</span><span class="na">setSigningKey</span><span class="p">(</span><span class="n">secretKey</span><span class="p">).</span><span class="na">parseClaimsJws</span><span class="p">(</span><span class="n">token</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">ExpiredJwtException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h3 id="2-로그인-시-토큰-발급"><strong>2. 로그인 시 토큰 발급</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">login</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">LoginRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 인증 처리 (생략)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;user-id&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">accessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">createAccessToken</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">refreshToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">createRefreshToken</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// Refresh Token을 DB나 Redis에 저장</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">refreshTokenService</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">TokenResponse</span><span class="p">(</span><span class="n">accessToken</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h3 id="3-access-token-만료-시-refresh-token으로-재발급"><strong>3. Access Token 만료 시 Refresh Token으로 재발급</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&#34;/token/refresh&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">TokenResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">refreshToken</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">TokenRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">refreshToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getRefreshToken</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">validateToken</span><span class="p">(</span><span class="n">refreshToken</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RuntimeException</span><span class="p">(</span><span class="s">&#34;Invalid refresh token&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">getUserIdFromToken</span><span class="p">(</span><span class="n">refreshToken</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 저장된 refresh token과 비교</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">stored</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">refreshTokenService</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">stored</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">refreshToken</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RuntimeException</span><span class="p">(</span><span class="s">&#34;Token mismatch&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">newAccessToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jwtProvider</span><span class="p">.</span><span class="na">createAccessToken</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">TokenResponse</span><span class="p">(</span><span class="n">newAccessToken</span><span class="p">,</span><span class="w"> </span><span class="n">refreshToken</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h3 id="4-refresh-token-저장-예시-redis-기반"><strong>4. Refresh Token 저장 예시 (Redis 기반)</strong></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RefreshTokenService</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">RedisTemplate</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">RefreshTokenService</span><span class="p">(</span><span class="n">RedisTemplate</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">redisTemplate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">set</span><span class="p">(</span><span class="n">userId</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">14</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">DAYS</span><span class="p">);</span><span class="w"> </span><span class="c1">// 유효 기간 설정</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">userId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">redisTemplate</span><span class="p">.</span><span class="na">opsForValue</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="n">userId</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><hr>
+<h2 id="q-에시에서-refreshtoken-에서-refresh-save전에-기존꺼는-안지워도-될까">Q. 에시에서 RefreshToken 에서 refresh save전에 기존꺼는 안지워도 될까?</h2>
+<h2 id="a-일반적으로는-기존-refresh-token을-삭제하거나-덮어써야-합니다">A. 일반적으로는 <strong>기존 Refresh Token을 삭제하거나 덮어써야 합니다</strong>.</h2>
+<p>왜냐면:</p>
+              </div>
+            </div>
+
+            <div class="f6 text-gray mt-2">
+              
+
+              Created
+              <relative-time datetime=" Thu, 27 Mar 2025 11:36:45 &#43;0900" class="no-wrap"
+                title=" Thu, 27 Mar 2025 11:36:45 &#43;0900">
+                Thu, 27 Mar 2025 11:36:45 &#43;0900
+              </relative-time>
+            </div>
+          </div>
+        </li>
+        
+        <li class="col-12 d-flex width-full py-4 border-bottom color-border-secondary public source">
+          <div class="col-12 d-inline-block">
+            <div class="d-inline-block mb-1">
+              <h3 class="wb-break-all">
                 <a href="https://pink-spider.github.io/post/infra/kafka/kakfa_fallback/">Apache Kafka 사용 시 코드로 오류 처리 방법</a>
               </h3>
             </div>
@@ -1001,77 +1154,6 @@ Kafka 전송이 실패했을 때 자동으로 재시도를 하고, 최종적으�
               <relative-time datetime=" Wed, 26 Mar 2025 11:26:45 &#43;0900" class="no-wrap"
                 title=" Wed, 26 Mar 2025 11:26:45 &#43;0900">
                 Wed, 26 Mar 2025 11:26:45 &#43;0900
-              </relative-time>
-            </div>
-          </div>
-        </li>
-        
-        <li class="col-12 d-flex width-full py-4 border-bottom color-border-secondary public source">
-          <div class="col-12 d-inline-block">
-            <div class="d-inline-block mb-1">
-              <h3 class="wb-break-all">
-                <a href="https://pink-spider.github.io/post/spring/jpa/select_lock_unlock/">Java에서 데이터베이스의 SELECT 쿼리에 대해 Lock과 Unlock을 사용하는 방법</a>
-              </h3>
-            </div>
-
-            <div>
-              <div class="col-12 d-inline-block text-gray mb-2 pr-4">
-                <p>Java에서 데이터베이스의 SELECT 쿼리에 대해 <strong>Lock</strong>과 <strong>Unlock</strong>을 사용하는 방법은 데이터베이스 시스템과 쿼리의 설정에 따라 달라집니다. 일반적으로 SELECT 자체는 데이터베이스에서 잠금을 유발하지 않지만, <strong>트랜잭션</strong>이나 <strong>쿼리 힌트</strong>를 사용하여 잠금 동작을 제어할 수 있습니다. 아래에 몇 가지 방법을 설명합니다.</p>
-<hr>
-<h3 id="1-트랜잭션을-사용한-lock-제어">1. <strong>트랜잭션을 사용한 Lock 제어</strong></h3>
-<p>트랜잭션을 통해 SELECT 문이 실행 중인 동안 다른 작업이 데이터에 접근하지 못하도록 잠금을 설정할 수 있습니다.</p>
-<h4 id="예제-코드">예제 코드:</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.Connection</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.DriverManager</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.PreparedStatement</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.sql.ResultSet</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DatabaseLockExample</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;jdbc:mysql://localhost:3306/your_database&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;your_username&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;your_password&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">Connection</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DriverManager</span><span class="p">.</span><span class="na">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// Auto-commit 비활성화</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">connection</span><span class="p">.</span><span class="na">setAutoCommit</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// SELECT ... FOR UPDATE (행 잠금 설정)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;SELECT * FROM your_table WHERE id = ? FOR UPDATE&#34;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">PreparedStatement</span><span class="w"> </span><span class="n">preparedStatement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">connection</span><span class="p">.</span><span class="na">prepareStatement</span><span class="p">(</span><span class="n">sql</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">preparedStatement</span><span class="p">.</span><span class="na">setInt</span><span class="p">(</span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// ID 값 바인딩</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">ResultSet</span><span class="w"> </span><span class="n">resultSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">preparedStatement</span><span class="p">.</span><span class="na">executeQuery</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">resultSet</span><span class="p">.</span><span class="na">next</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;Data: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">resultSet</span><span class="p">.</span><span class="na">getString</span><span class="p">(</span><span class="s">&#34;your_column&#34;</span><span class="p">));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c1">// 작업 후 커밋</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">connection</span><span class="p">.</span><span class="na">commit</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h4 id="설명">설명:</h4>
-<ul>
-<li><code>FOR UPDATE</code>는 해당 행을 잠그고, 다른 트랜잭션이 수정하지 못하도록 합니다.</li>
-<li>트랜잭션을 커밋하거나 롤백하면 잠금이 해제됩니다.</li>
-</ul>
-<hr>
-<h3 id="2-쿼리-힌트를-사용한-lock-제어">2. <strong>쿼리 힌트를 사용한 Lock 제어</strong></h3>
-<p>데이터베이스에 따라 SELECT 쿼리에 힌트를 추가하여 잠금 동작을 지정할 수 있습니다. 예를 들어, MySQL에서 <code>LOCK IN SHARE MODE</code> 또는 <code>FOR UPDATE</code>를 사용할 수 있습니다.</p>
-              </div>
-            </div>
-
-            <div class="f6 text-gray mt-2">
-              
-
-              Created
-              <relative-time datetime=" Wed, 26 Mar 2025 11:25:45 &#43;0900" class="no-wrap"
-                title=" Wed, 26 Mar 2025 11:25:45 &#43;0900">
-                Wed, 26 Mar 2025 11:25:45 &#43;0900
               </relative-time>
             </div>
           </div>
