@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Typescript on Pink Spider</title>
+    <link>https://pink-spider.github.io/tags/typescript/</link>
+    <description>Recent content in Typescript on Pink Spider</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Mon, 13 Jul 2026 11:50:54 +0900</lastBuildDate>
+    <atom:link href="https://pink-spider.github.io/tags/typescript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Null Safety란 무엇인가? 개념부터 실전 예시까지</title>
+      <link>https://pink-spider.github.io/post/til/null-safety/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/post/til/null-safety/</guid>
+      <description>&lt;h1 id=&#34;null-safety란-무엇인가-개념부터-실전-예시까지&#34;&gt;Null Safety란 무엇인가? 개념부터 실전 예시까지&lt;/h1&gt;&#xA;&lt;h2 id=&#34;1-null-safety의-정의&#34;&gt;1. Null Safety의 정의&lt;/h2&gt;&#xA;&lt;p&gt;**Null Safety(널 안전성)**란 프로그램이 실행되는 도중에 &lt;code&gt;null&lt;/code&gt;(혹은 &lt;code&gt;nil&lt;/code&gt;, &lt;code&gt;None&lt;/code&gt; 등 언어별 명칭은 다르지만 &amp;ldquo;값이 없음&amp;quot;을 의미하는 특수 값)을 참조함으로써 발생하는 오류를 **컴파일 타임(코드 작성 시점)**에 미리 방지하도록 설계된 언어적 기능 또는 프로그래밍 원칙을 말합니다.&lt;/p&gt;&#xA;&lt;p&gt;가장 대표적인 문제가 바로 &lt;strong&gt;NullPointerException(NPE)&lt;/strong&gt; 입니다. 자바의 창시자 중 한 명인 토니 호어(Tony Hoare)는 1965년 Null 참조를 발명한 것을 두고 스스로 &lt;strong&gt;&amp;ldquo;10억 달러짜리 실수(Billion Dollar Mistake)&amp;rdquo;&lt;/strong&gt; 라고 표현할 정도로, null로 인한 버그는 소프트웨어 개발 역사에서 가장 흔하고 비용이 큰 오류 중 하나였습니다.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

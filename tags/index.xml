@@ -6,20 +6,62 @@
     <description>Recent content in Tags on Pink Spider</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 16 Jun 2026 16:18:58 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jul 2026 11:50:54 +0900</lastBuildDate>
     <atom:link href="https://pink-spider.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java</title>
+      <link>https://pink-spider.github.io/tags/java/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/java/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kotlin</title>
+      <link>https://pink-spider.github.io/tags/kotlin/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Null-Safety</title>
+      <link>https://pink-spider.github.io/tags/null-safety/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/null-safety/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Programming</title>
+      <link>https://pink-spider.github.io/tags/programming/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/programming/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rust</title>
+      <link>https://pink-spider.github.io/tags/rust/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Swift</title>
+      <link>https://pink-spider.github.io/tags/swift/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/swift/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Typescript</title>
+      <link>https://pink-spider.github.io/tags/typescript/</link>
+      <pubDate>Mon, 13 Jul 2026 11:00:00 +0900</pubDate>
+      <guid>https://pink-spider.github.io/tags/typescript/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Backend</title>
       <link>https://pink-spider.github.io/tags/backend/</link>
       <pubDate>Tue, 16 Jun 2026 00:00:00 +0000</pubDate>
       <guid>https://pink-spider.github.io/tags/backend/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Java</title>
-      <link>https://pink-spider.github.io/tags/java/</link>
-      <pubDate>Tue, 16 Jun 2026 00:00:00 +0000</pubDate>
-      <guid>https://pink-spider.github.io/tags/java/</guid>
       <description></description>
     </item>
     <item>
